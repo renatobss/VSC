@@ -118,6 +118,19 @@ describe('Teste ', () => {
     cy.validarCamposObrigatorios('firstName', 'First Name is required')
   })
 
+  it.only('Deve preencher o formulário de checkout utilizando a função personalizada', () => {
+    cy.login('standard_user', 'secret_sauce')
+    const produtos = ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Test.allTheThings() T-Shirt (Red)']
+    cy.adicionarItem(produtos)
+    cy.get('[data-test="shopping-cart-link"]').click()
+    cy.get('[data-test="checkout"]').click()
+    const campos = ['firstName', 'lastName', 'postalCode']
+    const valores = ['Juca', 'Bala', '12345'] 
+    cy.preencherFormulario(campos, valores)
+    cy.get('[data-test="continue"]').click()
+    cy.url().should('include', '/checkout-step-two.html')
+  })
+
   //Próximas implementações: 
     // validar o valor total do carrinho
     // finalizar a compra e validar a mensagem de compra finalizada, 

@@ -19,7 +19,6 @@ Cypress.Commands.add('logout', () => {
   cy.get('[data-test="logout-sidebar-link"]').click()
 })
 
-// arrumar essa função
 Cypress.Commands.add('validarCamposObrigatorios', (campo, mensagem) => {
   cy.get(`[data-test="${campo}"]`).invoke('val').then((val) => {
     if (val === '') {
@@ -28,10 +27,13 @@ Cypress.Commands.add('validarCamposObrigatorios', (campo, mensagem) => {
   })
 })
 
-// arrumar a função, talver tirar o forEach e colocar um if para validar a mensagem de erro
-//tentar validar se o campo tá vazio ou não (if cy.get(`[data-test="${campo}"]`).invoke('val').then((val) => { if(val === '') {cy.get('[data-test="error"]').should('be.visible').and('contain', `${campo} is required`)}}) )
-Cypress.Commands.add('validarCamposObrigatoriosMensagem', (mensagens) => {
-  mensagens.forEach((mensagem) => {
-    cy.get('[data-test="error"]').should('be.visible').and('contain', mensagem)
-  })
+// criar uma nova função para usar um array de objetos com os campos e valores a serem preenchidos, para evitar a repetição de código
+Cypress.Commands.add('preencherFormulario', (campos, valores) => {
+  cy.log('valores dos campos: ', campos, valores)
+    campos.forEach((campo, i) => {
+      console.log('índice: ', i, 'campo: ', campo, 'valor: ', valores[i])
+      cy.get(`[data-test="${campo}"]`).clear().type(valores[i])
+    })
 })
+
+
