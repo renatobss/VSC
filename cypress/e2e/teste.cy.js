@@ -118,7 +118,7 @@ describe('Teste ', () => {
     cy.validarCamposObrigatorios('firstName', 'First Name is required')
   })
 
-  it.only('Deve preencher o formulário de checkout utilizando a função personalizada', () => {
+  it('Deve preencher o formulário de checkout utilizando a função personalizada', () => {
     cy.login('standard_user', 'secret_sauce')
     const produtos = ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Test.allTheThings() T-Shirt (Red)']
     cy.adicionarItem(produtos)
@@ -131,10 +131,29 @@ describe('Teste ', () => {
     cy.url().should('include', '/checkout-step-two.html')
   })
 
+  it.only('Prencher o formulário de checkout utilizando um array de objetos', () => {
+    cy.login('standard_user', 'secret_sauce')
+    const produtos = ['Sauce Labs Backpack', 'Sauce Labs Bike Light', 'Test.allTheThings() T-Shirt (Red)']
+    cy.adicionarItem(produtos)
+    cy.get('[data-test="shopping-cart-link"]').click()
+    cy.get('[data-test="checkout"]').click()
+    const camposValores = [
+      { campo: 'firstName', valor: 'Juca' },
+      { campo: 'lastName', valor: 'Bala' },
+      { campo: 'postalCode', valor: '12345' } 
+    ]
+    console.log('valores do array de objetos: ', camposValores)
+    cy.preencherFormularioComArrayDeObjetos(camposValores)
+    cy.get('[data-test="continue"]').click()
+    cy.url().should('include', '/checkout-step-two.html')
+  })
+
   //Próximas implementações: 
     // validar o valor total do carrinho
     // finalizar a compra e validar a mensagem de compra finalizada, 
     // validar o botão de voltar para home
-    // criar função para validar os campos obrigatórios de todas as telas, como por exemplo: login, checkout, etc
+
+  //Importante:
+  // Próximo dia, subir as alterações para o repositório e criar um pull request, para praticar o processo de revisão de código e colaboração em equipe.
 
 })
