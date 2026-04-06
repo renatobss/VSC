@@ -27,7 +27,6 @@ Cypress.Commands.add('validarCamposObrigatorios', (campo, mensagem) => {
   })
 })
 
-// criar uma nova função para usar um array de objetos com os campos e valores a serem preenchidos, para evitar a repetição de código
 Cypress.Commands.add('preencherFormulario', (campos, valores) => {
   cy.log('valores dos campos: ', campos, valores)
     campos.forEach((campo, i) => {
@@ -36,4 +35,12 @@ Cypress.Commands.add('preencherFormulario', (campos, valores) => {
     })
 })
 
+// criar uma nova função para usar um array de objetos com os campos e valores a serem preenchidos, para evitar a repetição de código
+Cypress.Commands.add('preencherFormularioComArrayDeObjetos', (camposValores) => {
+  cy.log('valores dos campos: ', camposValores)
+  camposValores.forEach((campoValor) => {
+    const { campo, valor } = campoValor
+    cy.get(`[data-test="${campo}"]`).clear().type(valor)
+  })
+})
 
